@@ -7,10 +7,11 @@
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="pandoc.css">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <!-- <script type="text/x-mathjax-config">
+  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       jax: ["input/TeX", "output/HTML-CSS"],
       MathML: {
@@ -18,7 +19,7 @@
       },
       "HTML-CSS": { webFont: "Neo-Euler" }
     });
-  </script> -->
+  </script>
 </head>
 <body>
 <h1 id="comma-is-a-product-the-algebra-of-concatenative-programming">Comma is a Product: the Algebra of Concatenative Programming</h1>
@@ -30,15 +31,35 @@
 <p>For example, in <code>2 3 + 5 *</code>, numbers <code>2</code> and <code>3</code> are pushed to the stack. Then <code>+</code> pops them from the stack and pushes <code>5</code>. Then another <code>5</code> is pushed on the stack and then <code>*</code> takes <code>5 5</code> from the stack and pushes <code>25</code>.</p>
 <p>Additionaly, a stack-based language may also have quotations. A <em>quotation</em> is a sequence of word, enclosed in braces. This sequence is pushed to the stack as a single value, so other words can use it. For example, in <code>2 2 * 4 = {success} {panic} ifelse</code>, the word <code>ifelse</code> takes a boolean and two quotation from the stack and then executes the first quotation.</p>
 <p>PostScript is one of the most-known stack-based languages. This is an example of PostScript code:</p>
-<pre><code>%define the function recursively:
-/fib { dup
+<pre><code>/fib { dup
        3 lt
          { pop 1 }
          { dup 1 sub fib exch 2 sub fib add }
        ifelse
     } def</code></pre>
 <p>Stack-based languages were believed to be imperative. But in <a href="http://www.kevinalbrecht.com/code/joy-mirror/joy.html">Joy</a>, Manfred von Thun <a href="http://www.kevinalbrecht.com/code/joy-mirror/j02maf.html">showed</a> that stack-based programming can be described in a pure functional way, as composition of functions that pass the stack to eash other. He also introduced the term <em>concatenative</em> for languages that are based on function composition.</p>
+<p>By using the stack, concatenative language provide a way to write elegant code without variables. But that leads us to a problem...</p>
 <h2 id="the-value-passing-problem">The value passing problem</h2>
+<p>Variables are a very powerful way to pass values from one function or another. That's why you can find them in every popular programming languages. Concatenative languages prefer to avoid variables (some languages don't even have then) and rely on the stack as the way to pass values. The problem is the stack is a rather opaque way to pass values.</p>
+<p>Consider a simple example. Let you have a function</p>
+<p><span class="math display">\[f(x, y, z) = x^2 + y^2 - |y|\]</span></p>
+<p>In a language with variables, such function is trivial to implement. Now this is how it looks in a concatenative language without using combinators (functions that take a quotation):</p>
+<pre><code>drop dup dup × swap abs rot3 dup × swap − +</code></pre>
+<p>As you can see, this involves quite a stack juggling together with special ad-hoc words like <code>rot3</code>. Using combinators make the code more clear:</p>
+<pre><code>drop [square] [abs] bi − [square] dip +</code></pre>
+<p>Unfortunately, it requires ad-hoc combinators like <code>bi</code>. Beside that, it is still hard to read. It is also hard to analyze. In fact, if the set of combinators is turing complete, the analysis is undecideable.</p>
+<p>Traditional concatenative programming is based on only one operation on function, the (generalized) function composition. To solve the value passing problem, we introduce an additional operation — function concatenation. With this operation, function <code>f</code> can be written like this:</p>
+<pre><code>drop dup (square,square (+)),abs (-)</code></pre>
+<h2 id="the-concatenation-of-functions">The concatenation of functions</h2>
+<p>Before introducing the function concatenation, we will need a few definitions.</p>
+<p>We say that a function has the <em>input arity</em> of <span class="math inline">\(n\)</span>, if it <em>takes</em> <span class="math inline">\(n\)</span> values. By analogy, we say that a function has the <em>output arity</em> of <span class="math inline">\(m\)</span> if it <em>returns</em> <span class="math inline">\(m\)</span> values.</p>
+<p>We say that a function is <em>simply aritied</em> if it has exacty one input arity and exactly one output arity.</p>
+<p>Not every function is simply aritied. For example, the function <code>apply</code> that takes a quotation and executes it is not simply aritied, because beside a quotation it takes <span class="math inline">\(n\)</span> values to pass them to the expression inside the quotation.</p>
+<p>Now we introduce concatenation of simply aritied functions. The concatenation of functions <code>f</code> and <code>g</code>, written as <code>f,g</code>, is a function that takes <span class="math inline">\(\operatorname{Ar_{in}}(\texttt f) + \operatorname{Ar_{in}}(\texttt g)\)</span> values, passes first <span class="math inline">\(\operatorname{Ar_{in}}(\texttt f)\)</span> values to <code>f</code> and last <span class="math inline">\(\operatorname{Ar_{in}}(\texttt g)\)</span> to <code>g</code> and returns output values of <code>f</code> followed by output values of <code>g</code>. So, if <code>f : a, b -&gt; x</code> and <code>g: c,d -&gt; y</code>, then <code>f,g : a, b, c, d -&gt; x, y</code>.</p>
+<p>To make it more clear, consider an example:</p>
+<pre><code>2 2 3 3 (*),(*) (+)</code></pre>
+<p>Here, <code>(*)</code> is a function that takes two numbers and returns their product. The concatenation <code>(*),(*)</code> is a function that takes four values and returns the product of the first two and the product of the last two. So <code>2 2 3 3 (*),(*)</code> returns <code>4 9</code> and the whole expression returns <code>13</code>.</p>
 <h2 id="categorical-point-of-view">Categorical point of view</h2>
+<h2 id="related-works">Related works</h2>
 </body>
 </html>

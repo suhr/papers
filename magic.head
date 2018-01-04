@@ -1,4 +1,4 @@
-<!-- <script type="text/x-mathjax-config">
+<script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     jax: ["input/TeX", "output/HTML-CSS"],
     MathML: {
@@ -6,4 +6,4 @@
     },
     "HTML-CSS": { webFont: "Neo-Euler" }
   });
-</script> -->
+</script>
