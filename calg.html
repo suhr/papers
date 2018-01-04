@@ -24,9 +24,21 @@
 <h1 id="comma-is-a-product-the-algebra-of-concatenative-programming">Comma is a Product: the Algebra of Concatenative Programming</h1>
 <p>Functional programmins is universaly understood as <em>applicative</em> programming: an extension of the lambda calculus, based on application and variable binding. But this not the only way. There's an alternative approach in functional programming, named <em>concatenative programing</em>, which is based on the function composition and a set of basic combinators.</p>
 <p>This paper introduces the algebra of two operations (composition and concatenation) as the way to define concatenative programming. The algebra provides an elegant and powerful way to combine functions without variables, which is, unlike point-free programming in applicative languages, is easy and straighforward to use.</p>
-<p>The algebra has various useful properties that allow to introduce novel features into concatenative programming, like pattern matching. This paper shows this properties without describing a way to use them.</p>
+<p>The algebra has various useful properties that allow to introduce novel features into concatenative programming, like pattern matching without variables. This paper shows this properties without describing a way to use them.</p>
 <h2 id="introduction">Introduction</h2>
-<p>Concatenative languages are often described as <em>stack-based</em> languages. This is not quite correct: concatenative languages are not necessary based on the stack.</p>
+<p>Concatenative languages are often described as <em>stack-based</em> languages. A stack-based language is a sequence of <em>words</em> that operate on the <em>stack</em>. Than a word is exected, it pops some values from the stack, then does some computations with these values, and then push the resuls to the stack.</p>
+<p>For example, in <code>2 3 + 5 *</code>, numbers <code>2</code> and <code>3</code> are pushed to the stack. Then <code>+</code> pops them from the stack and pushes <code>5</code>. Then another <code>5</code> is pushed on the stack and then <code>*</code> takes <code>5 5</code> from the stack and pushes <code>25</code>.</p>
+<p>Additionaly, a stack-based language may also have quotations. A <em>quotation</em> is a sequence of word, enclosed in braces. This sequence is pushed to the stack as a single value, so other words can use it. For example, in <code>2 2 * 4 = {success} {panic} ifelse</code>, the word <code>ifelse</code> takes a boolean and two quotation from the stack and then executes the first quotation.</p>
+<p>PostScript is one of the most-known stack-based languages. This is an example of PostScript code:</p>
+<pre><code>%define the function recursively:
+/fib { dup
+       3 lt
+         { pop 1 }
+         { dup 1 sub fib exch 2 sub fib add }
+       ifelse
+    } def</code></pre>
+<p>Stack-based languages were believed to be imperative. But in <a href="http://www.kevinalbrecht.com/code/joy-mirror/joy.html">Joy</a>, Manfred von Thun <a href="http://www.kevinalbrecht.com/code/joy-mirror/j02maf.html">showed</a> that stack-based programming can be described in a pure functional way, as composition of functions that pass the stack to eash other. He also introduced the term <em>concatenative</em> for languages that are based on function composition.</p>
+<h2 id="the-value-passing-problem">The value passing problem</h2>
 <h2 id="categorical-point-of-view">Categorical point of view</h2>
 </body>
 </html>
