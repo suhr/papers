@@ -63,6 +63,8 @@ Before introducing the function concatenation, we will need a few definitions.
 
 We say that a function has the *input arity* of $n$, if it *takes* $n$ values. By analogy, we say that a function has the *output arity* of $m$ if it *returns* $m$ values.
 
+A *fed function* is a functon of input arity 0.
+
 We say that a function is *simply aritied* if it has exacty one input arity and exactly one output arity.
 
 Not every function is simply aritied. For example, the function `apply` that takes a quotation and executes it is not simply aritied, because beside a quotation it takes $n$ values to pass them to the expression inside the quotation.
@@ -76,6 +78,24 @@ To make it more clear, consider an example:
 ```
 
 Here, `(*)` is a function that takes two numbers and returns their product. The concatenation `(*),(*)` is a function that takes four values and returns the product of the first two and the product of the last two. So `2 2 3 3 (*),(*)` returns `4 9` and the whole expression returns `13`.
+
+Note that the concatenation has a higher priority than the composition, so `a b,c` is `a (b,c)`, not `(a b),c`. Just like the composition, the concatenation forms a monoid over pure functions, so you can write `a,b,c` without using parenthesises.
+
+The concatenation provides an alternative interpretation of concatenative programming, without using an explicit stack.
+
+Let you have a function `f` that takes $n$ values and returns $m$ values. Let `id` be the identity function of arity of 1. For any natural $k$, there's an equivalent function `id,id,...,id,f`, that takes $k + n$ values and returns $k + m$ values.
+
+Let `g` be a function of input arity $p$ and output arity $q$. We say, that `f g` is a *proper composition* of functions `f` and `g`, if $\operatorname{Ar_{out}}(\texttt f) = \operatorname{Ar_{in}}(\texttt g)$. In the general case, we say that `f g` is a *generalized composition*.
+
+We say, that an expression is in the *canonical concatenative form* (CCF), if every composition in that expression is a proper composition.
+
+For example, let you have an expression `1 2 sqrt (+) 2 (/)`. The canonical concatenative form of this expression will be `1,2 id,sqrt (+) id,2 (/)`.
+
+Every expression can be recursively transformed into CCF. That means, that the generalized composition is merely a *semantic sugar*, achieved by implicitly concatenating identity functions. Neither concatenation nor proper composition rely on the concept of the stack. Thus, concatenative programming doesn't require it at all, it's just a convenient way to think about the data flow.
+
+## The variable elimination theorem
+
+There should be a good reason to introduce a new primitive operation on functions. In the case of the concatenation, the following theorem provides a good motivation for this.
 
 ## Categorical point of view
 
