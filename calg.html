@@ -67,8 +67,18 @@
 <p>We say, that an expression is in the <em>canonical concatenative form</em> (CCF), if every composition in that expression is a proper composition.</p>
 <p>For example, let you have an expression <code>1 2 sqrt (+) 2 (/)</code>. The canonical concatenative form of this expression will be <code>1,2 id,sqrt (+) id,2 (/)</code>.</p>
 <p>Every expression can be recursively transformed into CCF. That means, that the generalized composition is merely a <em>semantic sugar</em>, achieved by implicitly concatenating identity functions. Neither concatenation nor proper composition rely on the concept of the stack. Thus, concatenative programming doesn't require it at all, it's just a convenient way to think about the data flow.</p>
+<p>The concatenation also allows to introduce an infix notation as syntactic sugar. Let <code>f</code> and <code>g</code> are functions, and <code>op</code> is an operator. Then <code>f op g</code> desugars to <code>f,g op</code>.</p>
+<p>This sugar is very convinient. For example, it allows to rewrite<br />
+<code>drop dup (square,square (+)),abs (-)</code></p>
+<p>as</p>
+<p><code>drop dup square + square - abs</code>.</p>
 <h2 id="the-variable-elimination-theorem">The variable elimination theorem</h2>
 <p>There should be a good reason to introduce a new primitive operation on functions. In the case of the concatenation, the following theorem provides a good motivation for this.</p>
+<p>Suppose, you have a concatenative expression with variables, like <code>1 / (3 * x^2)</code>. The expression is a fed function, it doesn't take any values. In concatenative programming, you may want to eliminate varibles in the expression, so it would take values instead of using variables. In out case, <code>1 / (3 * id^2)</code> is a point-free version of the expression.</p>
+<p>It's finds out, there's a way to eliminate variables in any expression without quotations.</p>
+<p><strong>Proposition 1:</strong> Let <code>expr</code> be a fed concatenative expression without quotations, and let <code>t1</code>...<code>tN</code> are variables used in that expression. Then there exists an expression <code>pf</code> without variables, such as <code>t1,...,tN pf</code> returns the same values as <code>expr</code>.</p>
+<p>To prove the proposition 1, we need to proof a small lemma first.</p>
+<p><strong>Proposition 1.1 (the rewiring lemma): ...</strong></p>
 <h2 id="categorical-point-of-view">Categorical point of view</h2>
 <h2 id="related-works">Related works</h2>
 </body>

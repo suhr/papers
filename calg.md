@@ -93,9 +93,28 @@ For example, let you have an expression `1 2 sqrt (+) 2 (/)`. The canonical conc
 
 Every expression can be recursively transformed into CCF. That means, that the generalized composition is merely a *semantic sugar*, achieved by implicitly concatenating identity functions. Neither concatenation nor proper composition rely on the concept of the stack. Thus, concatenative programming doesn't require it at all, it's just a convenient way to think about the data flow.
 
+The concatenation also allows to introduce an infix notation as syntactic sugar. Let `f` and `g` are functions, and `op` is an operator. Then `f op g` desugars to `f,g op`.
+
+This sugar is very convinient. For example, it allows to rewrite
+`drop dup (square,square (+)),abs (-)`
+
+as
+
+`drop dup square + square - abs`.
+
 ## The variable elimination theorem
 
 There should be a good reason to introduce a new primitive operation on functions. In the case of the concatenation, the following theorem provides a good motivation for this.
+
+Suppose, you have a concatenative expression with variables, like `1 / (3 * x^2)`. The expression is a fed function, it doesn't take any values. In concatenative programming, you may want to eliminate varibles in the expression, so it would take values instead of using variables. In out case, `1 / (3 * id^2)` is a point-free version of the expression.
+
+It's finds out, there's a way to eliminate variables in any expression without quotations.
+
+**Proposition 1:** Let `expr` be a fed concatenative expression without quotations, and let `t1`...`tN` are variables used in that expression. Then there exists an expression `pf`  without variables, such as `t1,...,tN pf` returns the same values as `expr`.
+
+To prove the proposition 1, we need to proof a small lemma first.
+
+**Proposition 1.1 (the rewiring lemma): ...**
 
 ## Categorical point of view
 
