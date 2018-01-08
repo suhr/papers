@@ -1,4 +1,4 @@
-# Comma is a Product: the Algebra of Concatenative Programming
+Title: Comma is a Product: the Algebra of Concatenative Programming
 
 Functional programmins is universaly understood as *applicative* programming: an extension of the lambda calculus, based on application and variable binding. But this not the only way. There's an alternative approach in functional programming, named *concatenative programing*, which is based on the function composition and a set of basic combinators.
 
