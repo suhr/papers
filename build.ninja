@@ -5,4 +5,4 @@ rule pd
   command = pandoc $in -o $out $opts
 
 build calg.html: pd calg.md | magic.head
-
+build cpat.html: pd cpat.md | magic.head

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Pattern Matching in Concatenative Languages</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="pandoc.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX", "output/HTML-CSS"],
+      MathML: {
+        extensions: ["content-mathml.js"]
+      },
+      "HTML-CSS": { webFont: "Neo-Euler" }
+    });
+  </script>
+</head>
+<body>
+<header>
+<h1 class="title">Pattern Matching in Concatenative Languages</h1>
+</header>
+<p>In <a href="./calg.html">Comma is a Product: the Algebra of Concatenative Programming</a> we described the algebra of concatenative programming. In this paper, we introduce a way to define the concatenative pattern matching without using variables, by investigating the cancellation properties of the algebra.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Pattern matching is a way to deconstruct data by matching it with a pattern. It is the standard way to work with the algebraic data types. [TODO: write something]</p>
+<p>Algebraic data type is a data type defined by a list of primitive <em>data constructors</em>. For example:</p>
+<pre><code>data Stack[T] where
+    Nil : -&gt; Stack[T]
+    Cons : Stack[T], T -&gt; Stack[T]</code></pre>
+<p>Pattern matching:</p>
+<pre><code>case stack:
+    Cons[xs, x] -&gt;
+        ...
+    Nil -&gt;
+        ...</code></pre>
+<h2 id="pattern-matching-as-cancellation">Pattern matching as cancellation</h2>
+<p><strong>Proposition:</strong> every constructable value can be constructed in the concatenative algebra using only data constructors and the identity function (<code>id</code>).</p>
+<p>This is the direct consequence of the value elimination theorem.</p>
+<p>TODO: write moar</p>
+<p><strong>Proposition:</strong> the concatenative algebra is right-cancellative on the set of constructing functions.</p>
+<h2 id="compiling-to-a-decision-tree">Compiling to a decision tree</h2>
+<h2 id="related-works">Related works</h2>
+</body>
+</html>
