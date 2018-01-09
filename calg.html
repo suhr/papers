@@ -29,7 +29,7 @@
 <p>This paper introduces the algebra of two operations (composition and concatenation) as the way to define concatenative programming. The algebra provides an elegant and powerful way to combine functions without variables, which is, unlike point-free programming in applicative languages, is easy and straighforward to use.</p>
 <p>The algebra has various useful properties that allow to introduce novel features into concatenative programming, like pattern matching without variables. This paper shows this properties without describing a way to use them.</p>
 <h2 id="introduction">Introduction</h2>
-<p>Concatenative languages are often described as <em>stack-based</em> languages. A stack-based language is a sequence of <em>words</em> that operate on the <em>stack</em>. Than a word is exected, it pops some values from the stack, then does some computations with these values, and then push the resuls to the stack.</p>
+<p>Concatenative languages are often described as <em>stack-based</em> languages. A stack-based language is a sequence of <em>words</em> that operate on the <em>stack</em>. When a word is exected, it pops some values from the stack, then does some computations with these values, and then push the resuls to the stack.</p>
 <p>For example, in <code>2 3 + 5 *</code>, numbers <code>2</code> and <code>3</code> are pushed to the stack. Then <code>+</code> pops them from the stack and pushes <code>5</code>. Then another <code>5</code> is pushed on the stack and then <code>*</code> takes <code>5 5</code> from the stack and pushes <code>25</code>.</p>
 <p>Additionaly, a stack-based language may also have quotations. A <em>quotation</em> is a sequence of word, enclosed in braces. This sequence is pushed to the stack as a single value, so other words can use it. For example, in <code>2 2 * 4 = {success} {panic} ifelse</code>, the word <code>ifelse</code> takes a boolean and two quotation from the stack and then executes the first quotation.</p>
 <p>PostScript is one of the most-known stack-based languages. This is an example of PostScript code:</p>
@@ -79,8 +79,14 @@
 <p>Suppose, you have a concatenative expression with variables, like <code>1 / (3 * x^2)</code>. The expression is a fed function, it doesn't take any values. In concatenative programming, you may want to eliminate varibles in the expression, so it would take values instead of using variables. In out case, <code>1 / (3 * id^2)</code> is a point-free version of the expression.</p>
 <p>It's finds out, there's a way to eliminate variables in any expression without quotations.</p>
 <p><strong>Proposition 1:</strong> Let <code>expr</code> be a fed concatenative expression without quotations, and let <code>t1</code>...<code>tN</code> are variables used in that expression. Then there exists an expression <code>pf</code> without variables, such as <code>t1,...,tN pf</code> returns the same values as <code>expr</code>.</p>
-<p>To prove the proposition 1, we need to proof a small lemma first.</p>
-<p><strong>Proposition 1.1 (the rewiring lemma): ...</strong></p>
+<p>To prove the proposition 1, we need to proof a small lemma first. A <em>rewiring function</em> is a function which output consists of a subset of the function input values. Values can be droped, duplicated or reordered. For example, <code>a b c d -&gt; a c b c</code> is a rewiring function that drops <code>d</code> and duplicates <code>c</code>.</p>
+<p>Let we have some primitive rewiring functions: <code>dup</code> is <code>a -&gt; a a</code>, <code>swap</code> is <code>a b -&gt; b a</code>, <code>drop</code> is <code>a -&gt;</code>, <code>id</code> is <code>a -&gt; a</code>. Then the following is true.</p>
+<p><strong>Proposition 1.1 (the rewiring lemma):</strong> Any rewiring function can be constructed using only composition, concatenation and primitive rewiring functions.</p>
+<p>⏵To construct the rewiring function, we need to construct the function that drops and duplicates values and the function that reorders values. The composition of these function is the required rewiring function.</p>
+<p>The first function is <code>f1,f2,...,fN</code> where <code>fn</code> is <code>drop</code> or <code>dup</code>, <code>dup2</code>, ..., <code>dupK</code> — a function that takes a value and return the value <span class="math inline">\(k\)</span> times. Such function can be constructed this way: <code>dup id,dup id,id,dup ... id,...,id,dup</code>.</p>
+<p>The second function is a permutation. It can be constructed as the composition of pairwise permutations <code>id,...,id,swap,id,...,id</code>.⏴</p>
+<p>For example, <code>a b c d -&gt; a c b c</code> is <code>id,id,dup,drop id,swap,id</code>. The first concatenation is <code>a b c d -&gt; a b c c</code>, and the second is <code>a b c d -&gt; a c b d</code>.</p>
+<h2 id="substructural-properties">Substructural properties</h2>
 <h2 id="categorical-point-of-view">Categorical point of view</h2>
 <h2 id="related-works">Related works</h2>
 </body>

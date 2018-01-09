@@ -8,7 +8,7 @@ The algebra has various useful properties that allow to introduce novel features
 
 ## Introduction
 
-Concatenative languages are often described as *stack-based* languages. A stack-based language is a sequence of *words* that operate on the *stack*. Than a word is exected, it pops some values from the stack, then does some computations with these values, and then push the resuls to the stack.
+Concatenative languages are often described as *stack-based* languages. A stack-based language is a sequence of *words* that operate on the *stack*. When a word is exected, it pops some values from the stack, then does some computations with these values, and then push the resuls to the stack.
 
 For example, in `2 3 + 5 *`, numbers `2` and `3` are pushed to the stack. Then `+` pops them from the stack and pushes `5`. Then another `5` is pushed on the stack and then `*` takes `5 5` from the stack and pushes `25`.
 
@@ -112,9 +112,21 @@ It's finds out, there's a way to eliminate variables in any expression without q
 
 **Proposition 1:** Let `expr` be a fed concatenative expression without quotations, and let `t1`...`tN` are variables used in that expression. Then there exists an expression `pf`  without variables, such as `t1,...,tN pf` returns the same values as `expr`.
 
-To prove the proposition 1, we need to proof a small lemma first.
+To prove the proposition 1, we need to proof a small lemma first. A *rewiring function* is a function which output consists of a subset of the function input values. Values can be droped, duplicated or reordered. For example, `a b c d -> a c b c`  is a rewiring function that drops `d` and duplicates `c`.
 
-**Proposition 1.1 (the rewiring lemma): ...**
+Let we have some primitive rewiring functions: `dup` is `a -> a a`, `swap` is `a b -> b a`, `drop` is `a -> `, `id` is `a -> a`. Then the following is true.
+
+**Proposition 1.1 (the rewiring lemma):** Any rewiring function can be constructed using only composition, concatenation and primitive rewiring functions.
+
+⏵To construct the rewiring function, we need to construct the function that drops and duplicates values and the function that reorders values. The composition of these function is the required rewiring function.
+
+The first function is `f1,f2,...,fN` where `fn` is `drop` or `dup`, `dup2`, ..., `dupK` — a function that takes a value and return the value $k$ times. Such function can be constructed this way: `dup id,dup id,id,dup ... id,...,id,dup`.
+
+The second function is a permutation. It can be constructed as the composition of pairwise permutations `id,...,id,swap,id,...,id`.⏴
+
+For example,  `a b c d -> a c b c` is `id,id,dup,drop id,swap,id`. The first concatenation is `a b c d -> a b c c`, and the second is `a b c d -> a c b d`. 
+
+## Substructural properties
 
 ## Categorical point of view
 
