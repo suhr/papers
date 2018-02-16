@@ -4,7 +4,7 @@ Functional programmins is universaly understood as *applicative* programming: an
 
 This paper introduces the algebra of two operations (composition and concatenation) as the way to define concatenative programming. The algebra provides an elegant and powerful way to combine functions without variables, which is, unlike point-free programming in applicative languages, is easy and straighforward to use.
 
-The algebra has various useful properties that allow to introduce novel features into concatenative programming, like pattern matching without variables. This paper shows this properties without describing a way to use them.
+The algebra has various useful properties that allow to introduce novel features into concatenative programming, like pattern matching without variables. This paper shows this properties without describing ways to use them.
 
 ## Introduction
 
@@ -12,7 +12,7 @@ Concatenative languages are often described as *stack-based* languages. A stack-
 
 For example, in `2 3 + 5 *`, numbers `2` and `3` are pushed to the stack. Then `+` pops them from the stack and pushes `5`. Then another `5` is pushed on the stack and then `*` takes `5 5` from the stack and pushes `25`.
 
-Additionaly, a stack-based language may also have quotations. A *quotation* is a sequence of word, enclosed in braces. This sequence is pushed to the stack as a single value, so other words can use it. For example, in `2 2 * 4 = {success} {panic} ifelse`, the word `ifelse` takes a boolean and two quotation from the stack and then executes the first quotation.
+Additionaly, a stack-based language may also have quotations. A *quotation* is a sequence of words, enclosed in braces. The quotation is pushed to the stack as a single value, so other words can use it. For example, in `2 2 * 4 = {success} {panic} ifelse`, the word `ifelse` takes a boolean and two quotations from the stack and then executes the first quotation.
 
 PostScript is one of the most-known stack-based languages. This is an example of PostScript code:
 
@@ -51,7 +51,7 @@ drop [square] [abs] bi − [square] dip +
 
 Unfortunately, it requires ad-hoc combinators like `bi`. Beside that, it is still hard to read. It is also hard to analyze. In fact, if the set of combinators is turing complete, the analysis is undecideable.
 
-Traditional concatenative programming is based on only one operation on function, the (generalized) function composition. To solve the value passing problem, we introduce an additional operation — function concatenation. With this operation, function `f` can be written like this:
+Traditionaly, concatenative programming is based on only one operation on function, the (generalized) function composition. To solve the value passing problem, we introduce an additional operation — function concatenation. With this operation, function `f` can be written like this:
 
 ```
 drop dup (square,square (+)),abs (-)
@@ -93,7 +93,7 @@ For example, let you have an expression `1 2 sqrt (+) 2 (/)`. The canonical conc
 
 Every expression can be recursively transformed into CCF. That means, that the generalized composition is merely a *semantic sugar*, achieved by implicitly concatenating identity functions. Neither concatenation nor proper composition rely on the concept of the stack. Thus, concatenative programming doesn't require it at all, it's just a convenient way to think about the data flow.
 
-The concatenation also allows to introduce an infix notation as syntactic sugar. Let `f` and `g` are functions, and `op` is an operator. Then `f op g` desugars to `f,g op`.
+The concatenation also allows to introduce an infix notation as a syntactic sugar. Let `f` and `g` are functions, and `op` is an operator. Then `f op g` desugars to `f,g op`.
 
 This sugar is very convinient. For example, it allows to rewrite
 `drop dup (square,square (+)),abs (-)`
@@ -110,9 +110,9 @@ Suppose, you have a concatenative expression with variables, like `1 / (3 * x^2)
 
 It's finds out, there's a way to eliminate variables in any expression without quotations.
 
-**Proposition 1:** Let `expr` be a fed concatenative expression without quotations, and let `t1`...`tN` are variables used in that expression. Then there exists an expression `pf`  without variables, such as `t1,...,tN pf` returns the same values as `expr`.
+**Proposition 1:** Let `expr` be a fed concatenative expression without quotations, and let `t1`...`tN` are variables used in that expression. Then there exists an expression `pf` without variables, such as `t1,...,tN pf` returns the same values as `expr`.
 
-To prove the proposition 1, we need to proof a small lemma first. A *rewiring function* is a function which output consists of a subset of the function input values. Values can be droped, duplicated or reordered. For example, `a b c d -> a c b c`  is a rewiring function that drops `d` and duplicates `c`.
+To prove the proposition 1, we need to proof a small lemma first. A *rewiring function* is a function which output consists of a subset of the function's input values. Values can be droped, duplicated or reordered. For example, `a b c d -> a c b c`  is a rewiring function that drops `d` and duplicates `c`.
 
 Let we have some primitive rewiring functions: `dup` is `a -> a a`, `swap` is `a b -> b a`, `drop` is `a -> `, `id` is `a -> a`. Then the following is true.
 
@@ -122,9 +122,21 @@ Let we have some primitive rewiring functions: `dup` is `a -> a a`, `swap` is `a
 
 The first function is `f1,f2,...,fN` where `fn` is `drop` or `dup`, `dup2`, ..., `dupK` — a function that takes a value and return the value $k$ times. Such function can be constructed this way: `dup id,dup id,id,dup ... id,...,id,dup`.
 
-The second function is a permutation. It can be constructed as the composition of pairwise permutations `id,...,id,swap,id,...,id`.⏴
+The second function is a permutation. It can be constructed as a composition of pairwise permutations `id,...,id,swap,id,...,id`.⏴
 
 For example,  `a b c d -> a c b c` is `id,id,dup,drop id,swap,id`. The first concatenation is `a b c d -> a b c c`, and the second is `a b c d -> a c b d`. 
+
+Now we can construct the point-free expression recursively. To do so, we mark some function input values with variable names. Then:
+
+- `tN` becomes `id` with a marked input
+- Concatenation works as usually, but preserves the input marks
+
+Composition is a little bit more tricky. Let we have `f g`:
+
+1. Because `g` has additional marked inputs, the output arity of `f` doesn't match the input arity of `g`. We fix this by concatenating corresponding marked `id`s to `f`.
+2. Then we construct `f w g`, where `w` is a rewiring function that connects marked `id`s to corresponding marked inputs of `g` and connects unmarked outputs of `f` to corresponding unmarked inputs of `g`.
+
+The resulting point-free expression can be rewired to to get the required `pf` function.
 
 ## Substructural properties
 
