@@ -34,7 +34,7 @@ In functional languages, algebraic data types and pattern matching rely on appli
 
 ## Pattern matching as cancellation
 
-Expression like `(((Nil,1 Cons),2 Cons),3 Cons)` are built using only data constructors and values. Let's call such example as simple constructors.
+Expression like `(((Nil,1 Cons),2 Cons),3 Cons)` are built using only data constructors and values. Let's call such expressions as simple constructors.
 
 **Proposition:** every simple constructor can be rewritten as `vs cs`, where `vs` is a concatenation of values and `cs` is a function built from data constructors and `id`.
 
@@ -64,7 +64,17 @@ Note that $\tilde\, c$ is only valid for values obtained by applying $(\cdot * c
 
 For example, the cancellation of `(id,id Cons),3 Cons` is `~Cons (~Cons id,id),drop`.
 
-This is the essence of concatenative pattern matching.
+This is the essence of concatenative pattern matching. We can define the `case` statement, where patterns are expressions, and each branch cancels the corresponding expression. Like so:
+
+```
+case stack:
+    Cons ->
+        f    -- evaluates as `~Cons f`
+    Nil ->
+        g    -- evaluates as `~Nil g`
+```
+
+This is variable-free equivalent of `case` statements in applicative languages.
 
 ## Compiling to conditionals
 

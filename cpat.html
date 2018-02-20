@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Pattern Matching in Concatenative Languages</title>
-  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
   <link rel="stylesheet" href="pandoc.css">
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -26,7 +31,7 @@
 <h1 class="title">Pattern Matching in Concatenative Languages</h1>
 </header>
 <p>In <a href="./calg.html">Comma is a Product: the Algebra of Concatenative Programming</a> we described the algebra of concatenative programming. In this paper, we introduce a way to define the concatenative pattern matching without using variables, by investigating the cancellation properties of the algebra.</p>
-<h2 id="introduction">Introduction</h2>
+<h2>Introduction</h2>
 <p>An algebraic data type is a data type defined by a list of <em>data constructors</em>. For example:</p>
 <pre><code>data Stack[T] where
     Nil : -&gt; Stack[T]
@@ -41,8 +46,8 @@
         ...</code></pre>
 <p>Here, the value of <code>stack</code> is matched against two patterns: <code>Cons[$xs, $x]</code> and <code>Nil</code>. In the <code>Cons[$xs, $x]</code> branch, the corresponding values are binded to variables <code>$xs</code> and <code>$x</code>. For example, if <code>stack</code> is <code>Cons[Cons[Cons[Nil, 1], 2], 3]</code>, then <code>$xs</code> is <code>Cons[Cons[Nil, 1], 2]</code> and <code>$x</code> is <code>3</code>.</p>
 <p>In functional languages, algebraic data types and pattern matching rely on application and variable binding. Our approach relies on the cancellation properties of the concatenative algebra.</p>
-<h2 id="pattern-matching-as-cancellation">Pattern matching as cancellation</h2>
-<p>Expression like <code>(((Nil,1 Cons),2 Cons),3 Cons)</code> are built using only data constructors and values. Let's call such example as simple constructors.</p>
+<h2>Pattern matching as cancellation</h2>
+<p>Expression like <code>(((Nil,1 Cons),2 Cons),3 Cons)</code> are built using only data constructors and values. Let's call such expressions as simple constructors.</p>
 <p><strong>Proposition:</strong> every simple constructor can be rewritten as <code>vs cs</code>, where <code>vs</code> is a concatenation of values and <code>cs</code> is a function built from data constructors and <code>id</code>.</p>
 <p><strong>Proof:</strong> The value elimination theorem and the substructural properties of the concatenative algebra.</p>
 <p>For example,<code>(((Nil,1 Cons),2 Cons),3 Cons)</code> can be written as <code>1,2,3 (((Nil,id Cons),id Cons),id Cons)</code>.</p>
@@ -60,9 +65,15 @@
 <li>The cancellation of <code>a b</code> is <code>~b ~a</code></li>
 </ol>
 <p>For example, the cancellation of <code>(id,id Cons),3 Cons</code> is <code>~Cons (~Cons id,id),drop</code>.</p>
-<p>This is the essence of concatenative pattern matching.</p>
-<h2 id="compiling-to-conditionals">Compiling to conditionals</h2>
-<h2 id="extensions">Extensions</h2>
-<h2 id="related-works">Related works</h2>
+<p>This is the essence of concatenative pattern matching. We can define the <code>case</code> statement, where patterns are expressions, and each branch cancels the corresponding expression. Like so:</p>
+<pre><code>case stack:
+    Cons -&gt;
+        f    -- evaluates as `~Cons f`
+    Nil -&gt;
+        g    -- evaluates as `~Nil g`</code></pre>
+<p>This is variable-free equivalent of <code>case</code> statements in applicative languages.</p>
+<h2>Compiling to conditionals</h2>
+<h2>Extensions</h2>
+<h2>Related works</h2>
 </body>
 </html>
