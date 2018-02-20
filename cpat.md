@@ -1,4 +1,4 @@
-Title: Pattern Matching in Concatenative Languages
+Title: Cancellation Based Pattern Matching
 
 In [Comma is a Product: the Algebra of Concatenative Programming](./calg.html) we described the algebra of concatenative programming. In this paper, we introduce a way to define the concatenative pattern matching without using variables, by investigating the cancellation properties of the algebra.
 
