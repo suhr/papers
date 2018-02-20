@@ -52,7 +52,7 @@
 <p><strong>Proof:</strong> The value elimination theorem and the substructural properties of the concatenative algebra.</p>
 <p>For example,<code>(((Nil,1 Cons),2 Cons),3 Cons)</code> can be written as <code>1,2,3 (((Nil,id Cons),id Cons),id Cons)</code>.</p>
 <p>In an algebra with operation \(*\), the element <span class="math inline">\(c\)</span> is <em>right-cancellative</em> if for any <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> the following is true:</p>
-<p><span class="math display">\[a * c = b * c \quad ⇒ \quad a = c\]</span></p>
+<p><span class="math display">\[a * c = b * c \quad ⇒ \quad a = b\]</span></p>
 <p>In other words, <span class="math inline">\(c\)</span> is cancellative if it can be undone in an equation. An algebra is right-cancellative if all elements in the algebra are right-cancellative.</p>
 <p>We will use a different, more restricted definition. We say that <span class="math inline">\(c\)</span> is right-cancellative if there exists such function <span class="math inline">\(\tilde\, c\)</span> so the following is true for any <span class="math inline">\(a\)</span>:</p>
 <p><span class="math display">\[\tilde\, c (a * c) = a\]</span></p>
@@ -71,7 +71,7 @@
         f    -- evaluates as `~Cons f`
     Nil -&gt;
         g    -- evaluates as `~Nil g`</code></pre>
-<p>This is variable-free equivalent of <code>case</code> statements in applicative languages.</p>
+<p>This is a variable-free equivalent of the <code>case</code> statements in applicative languages.</p>
 <h2>Compiling to conditionals</h2>
 <h2>Extensions</h2>
 <h2>Related works</h2>

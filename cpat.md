@@ -44,7 +44,7 @@ For example,`(((Nil,1 Cons),2 Cons),3 Cons)` can be written as `1,2,3 (((Nil,id 
 
 In an algebra with operation \\(\*\\), the element $c$ is *right-cancellative* if for any $a$ and $b$ the following is true:
 
-$$a * c = b * c \quad ⇒ \quad a = c$$
+$$a * c = b * c \quad ⇒ \quad a = b$$
 
 In other words, $c$ is cancellative if it can be undone in an equation. An algebra is right-cancellative if all elements in the algebra are right-cancellative.
 
@@ -74,7 +74,7 @@ case stack:
         g    -- evaluates as `~Nil g`
 ```
 
-This is variable-free equivalent of `case` statements in applicative languages.
+This is a variable-free equivalent of the `case` statements in applicative languages.
 
 ## Compiling to conditionals
 
