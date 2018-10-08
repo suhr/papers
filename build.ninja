@@ -6,3 +6,4 @@ rule pd
 
 build calg.html: pd calg.md | magic.head
 build cpat.html: pd cpat.md | magic.head
+build opcalg.html: pd opcalg.md | magic.head
