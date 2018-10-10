@@ -30,7 +30,23 @@
 <header>
 <h1 class="title">Operational Semantics of the Concatenative Algebra</h1>
 </header>
+<p>Application is an operation on a function and a value. Contrary to that, both composition and concatenation are operations on functions.</p>
+<p>But computation is the process of transforming values. There're two ways to solve this problem:</p>
+<ol>
+<li>Extend composition and concatenation for values</li>
+<li>Separate values from functions, so expressions consist only of functions</li>
+</ol>
+<p>We will use the second approach. So a program transforms a tuple of values (traditionally called as <em>stack</em>) into another tuple. It can be written as</p>
+<p><span class="math display">\[P(S_1) = S_2\]</span></p>
+<p>Stack values are written using angular parenthesis, like so: <span class="math inline">\(⟨1, 2⟩\)</span>. A concatenation of stacks is written as <span class="math inline">\(S_1 ∪ S_2\)</span>, for example, <span class="math inline">\(⟨1, 2⟩ ∪ ⟨3, 2⟩ = ⟨1, 2, 3, 2⟩\)</span>.</p>
+<p>An computation state is a pair of the stack and the program, which we write as <span class="math inline">\(S\ P\)</span>.</p>
+<p><span class="math display">\[S_1\ P ⟶ S_2\]</span></p>
+<h2>The semantics of the CA</h2>
+<p>Let's define the reduction semantics of the concatenative algebra.</p>
+<p>Most functions are defined outside of the concatenative algebra. An example of such function is the addition: <span class="math inline">\(add(⟨a, b⟩) = ⟨a + b⟩\)</span>.</p>
+<p>The reduction rule for these functions looks like this:</p>
 <p><span class="math display">\[S\ P\leadsto P(S) \tag{Ext}\]</span></p>
+<p>Primitive rewiring functions:</p>
 <p><span class="math display">\[
 \begin{align}
 ⟨a⟩\ \mathtt{id} &amp;\leadsto ⟨a⟩ \\
@@ -40,7 +56,9 @@
 \end{align}
 \tag{Prim}
 \]</span></p>
+<p>Composition:</p>
 <p><span class="math display">\[S\ (P∘Q) \leadsto (S\ P)\ Q \tag{Comp}\]</span></p>
+<p>Concatenation:</p>
 <p><span class="math display">\[
 \begin{align}
 \begin{split}
@@ -55,13 +73,7 @@ n &amp;= \mathop{\mathrm{Ar}}_\nolimits\mathrm{in}(P)
 \end{align}
 \tag{Conc}
 \]</span></p>
-<p><span class="math display">\[
-\begin{align}
-⟨a⟩\ \mathtt{unit} &amp;\leadsto ⟨\mathop{\mathrm{unit}}(a)⟩ \\
-⟨P,Q⟩\ \mathtt{comp} &amp;\leadsto ⟨P ∘ Q⟩
-\end{align}
-\tag{Meta}
-\]</span></p>
+<p>Higher-order programming:</p>
 <p><span class="math display">\[
 \begin{align}
 ⟨⟩\ \mathtt{\{P\}} &amp;\leadsto ⟨P⟩ \\
@@ -69,6 +81,15 @@ S ∪ ⟨P⟩\ \mathtt{apply} &amp;\leadsto S\ P
 \end{align}
 \tag{Higher}
 \]</span></p>
+<p>Metaprogramming:</p>
+<p><span class="math display">\[
+\begin{align}
+⟨a⟩\ \mathtt{unit} &amp;\leadsto ⟨\mathop{\mathrm{unit}}(a)⟩ \\
+⟨P,Q⟩\ \mathtt{comp} &amp;\leadsto ⟨P ∘ Q⟩
+\end{align}
+\tag{Meta}
+\]</span></p>
+<h2>Extension: lambda expressions</h2>
 <p><span class="math display">\[S ∪ ⟨a⟩\ (\mathtt{λ v. P}) \leadsto S\ P[v := \mathop{\mathrm{unit}}(a)] \tag{Lam}\]</span></p>
 </body>
 </html>
