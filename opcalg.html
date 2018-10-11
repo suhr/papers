@@ -46,7 +46,7 @@
 <p>Most functions are defined outside of the concatenative algebra. An example of such function is the addition: <span class="math inline">\(add(⟨a, b⟩) = ⟨a + b⟩\)</span>.</p>
 <p>The reduction rule for these functions looks like this:</p>
 <p><span class="math display">\[S\ P\leadsto P(S) \tag{Ext}\]</span></p>
-<p>Primitive rewiring functions:</p>
+<p>But primitive rewiring functions are a part of the concatenative algebra:</p>
 <p><span class="math display">\[
 \begin{align}
 ⟨a⟩\ \mathtt{id} &amp;\leadsto ⟨a⟩ \\
@@ -56,8 +56,9 @@
 \end{align}
 \tag{Prim}
 \]</span></p>
-<p>Composition:</p>
+<p>Now the rule for composition:</p>
 <p><span class="math display">\[S\ (P∘Q) \leadsto (S\ P)\ Q \tag{Comp}\]</span></p>
+<p>This rule means that in order to evaluare <span class="math inline">\(S\ (P∘Q)\)</span> you have to evaluate <span class="math inline">\(S\ P\)</span> first.</p>
 <p>Concatenation:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -73,6 +74,8 @@ n &amp;= \mathop{\mathrm{Ar}}_\nolimits\mathrm{in}(P)
 \end{align}
 \tag{Conc}
 \]</span></p>
+<p>In order to evaluate <span class="math inline">\(S\ (P\mathbin{,}Q)\)</span>, you split the stack in two parts: <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>. The <span class="math inline">\(S_1\)</span> contains first <span class="math inline">\(\mathop{\mathrm{Ar}}_\nolimits\mathrm{in}(P)\)</span> elements of <span class="math inline">\(S\)</span> and <span class="math inline">\(S_2\)</span> contains reminding elements of <span class="math inline">\(S\)</span>. Then you evaluate <span class="math inline">\(S_1\ P\)</span> and <span class="math inline">\(S_2\ Q\)</span> and concatenate the results.</p>
+<p>Note that this rule implies a prior knowledge of input arity of <span class="math inline">\(P\)</span>. The most practical way to obtain this value is the type checking. But there's also an alternative way, where the stack is splitted nondeterministically and then all stuck states are cut.</p>
 <p>Higher-order programming:</p>
 <p><span class="math display">\[
 \begin{align}

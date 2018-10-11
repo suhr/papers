@@ -28,7 +28,7 @@ The reduction rule for these functions looks like this:
 
 $$S\ P\leadsto P(S) \tag{Ext}$$
 
-Primitive rewiring functions:
+But primitive rewiring functions are a part of the concatenative algebra:
 
 $$
 \begin{align}
@@ -40,9 +40,11 @@ $$
 \tag{Prim}
 $$
 
-Composition:
+Now the rule for composition:
 
 $$S\ (P∘Q) \leadsto (S\ P)\ Q \tag{Comp}$$
+
+This rule means that in order to evaluare $S\ (P∘Q)$ you have to evaluate $S\ P$ first.
 
 Concatenation:
 
@@ -60,6 +62,10 @@ n &= \mathop{\mathrm{Ar}}_\nolimits\mathrm{in}(P)
 \end{align}
 \tag{Conc}
 $$
+
+In order to evaluate $S\ (P\mathbin{,}Q)$, you split the stack in two parts: $S_1$ and $S_2$. The $S_1$ contains first $\mathop{\mathrm{Ar}}_\nolimits\mathrm{in}(P)$ elements of $S$ and $S_2$ contains reminding elements of $S$. Then you evaluate $S_1\ P$ and $S_2\ Q$ and concatenate the results.
+
+Note that this rule implies a prior knowledge of input arity of $P$. The most practical way to obtain this value is the type checking. But there's also an alternative way, where the stack is splitted nondeterministically and then all stuck states are cut.
 
 Higher-order programming:
 
