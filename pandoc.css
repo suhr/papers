@@ -3,21 +3,16 @@
  */
 
 html {
-    font-size: 100%;
-    overflow-y: scroll;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
 }
 
 body {
-    color: #080808;
-    font-family: 'PT Serif', Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
-    font-size: 14px;
-    line-height: 1.7;
+    color: #151515;
+    font-family: 'PT Sans', sans;
+    line-height: 1.4;
     padding: 1em;
     margin: auto;
-    max-width: 48em;
+    max-width: 46em;
     background: #fefefe;
 }
 
@@ -77,11 +72,6 @@ a::selection {
 }
 
 p {
-    margin: 0em 0;
-}
-
-p {
-    margin: 0.7em 0;
     hyphens: auto;
 }
 
@@ -92,6 +82,7 @@ img {
 
 h1, h2, h3, h4, h5, h6 {
     color: #111;
+    font-family: PT Serif, serif;
     line-height: 125%;
     margin-top: 1.7em;
     font-weight: normal;
@@ -144,9 +135,8 @@ hr {
 
 pre, code, kbd, samp {
     color: #000;
-    font-family: 'Consolas', monospace;
-    _font-family: 'courier new', monospace;
-    font-size: 0.98em;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 0.95em;
     background: #ededed;
 }
 
@@ -224,7 +214,6 @@ dd:last-child {
 
 img {
     border: 0;
-    -ms-interpolation-mode: bicubic;
     vertical-align: middle;
 }
 
