@@ -90,4 +90,3 @@ $$
 ## Extension: lambda expressions
 
 $$S ∪ ⟨a⟩\ (\mathtt{λ v. P}) \leadsto S\ P[v := \mathop{\mathrm{unit}}(a)] \tag{Lam}$$
-
